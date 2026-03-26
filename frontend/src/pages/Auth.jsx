@@ -17,10 +17,10 @@ export function Login() {
     setLoading(true);
     try {
       const data = await api.login(username, password);
-      login(data.user);
-      showToast(`Welcome back, ${data.user.username}!`);
+      login({ username: data.username, role: data.role, token: data.token });
+      showToast(`Welcome back, ${data.username}!`);
       if (!locationGranted) navigate('/location-permission');
-      else navigate(data.user.role === 'driver' ? '/driver' : '/home');
+      else navigate(data.role === 'driver' ? '/driver' : '/home');
     } catch (e) {
       setError(e.message);
     }
@@ -78,8 +78,10 @@ export function Register() {
     if (password.length < 6) { setError('Password must be at least 6 characters'); return; }
     setLoading(true);
     try {
-      const data = await api.register(username, password, role);
-      login(data.user);
+      await api.register(username, password, role);
+      // After registration, login to get user data
+      const data = await api.login(username, password);
+      login({ username: data.username, role: data.role, token: data.token });
       if (!locationGranted) navigate('/location-permission');
       else navigate(role === 'driver' ? '/driver' : '/home');
     } catch (e) {

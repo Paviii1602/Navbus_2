@@ -8,14 +8,19 @@ async function apiFetch(path, opts = {}) {
     headers: { 'Content-Type': 'application/json', ...opts.headers },
     ...opts,
   });
-  const data = await res.json();
+  // Check if response has content
+  const text = await res.text();
+  if (!text) {
+    throw new Error('Empty response from server');
+  }
+  const data = JSON.parse(text);
   if (!res.ok) throw new Error(data.error || 'API Error');
   return data;
 }
 
 export const api = {
-  login:   (u, p)      => apiFetch('/auth/login',    { method: 'POST', body: JSON.stringify({ username: u, password: p }) }),
-  register:(u, p, r)   => apiFetch('/auth/register', { method: 'POST', body: JSON.stringify({ username: u, password: p, role: r }) }),
+  login:   (u, p)      => apiFetch('/login',    { method: 'POST', body: JSON.stringify({ username: u, password: p }) }),
+  register:(u, p, r)   => apiFetch('/register', { method: 'POST', body: JSON.stringify({ username: u, password: p, role: r }) }),
   getRoutes:            () => apiFetch('/routes'),
   getRoute:        (id) => apiFetch(`/routes/${id}`),
   getBuses:             () => apiFetch('/buses'),
