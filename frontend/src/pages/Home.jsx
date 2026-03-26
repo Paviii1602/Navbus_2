@@ -4,13 +4,6 @@ import { useApp } from '../context/AppContext';
 import ProfileDrawer from '../components/ProfileDrawer';
 import { api, getEtaLabel } from '../utils/api';
 
-/* ─────────────────────────────────────────────────────────
-   Reverse-geocode lat/lng → human-readable city name.
-   Uses the browser's free Nominatim (OpenStreetMap) API —
-   no API key required, works everywhere.
-   Returns something like "Vellore, Tamil Nadu" or just the
-   raw coords as fallback.
-   ───────────────────────────────────────────────────────── */
 async function reverseGeocode(lat, lng) {
   try {
     const url = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json&accept-language=en`;
@@ -18,7 +11,6 @@ async function reverseGeocode(lat, lng) {
     const data = await res.json();
     const addr = data.address || {};
 
-    /* Build a short, readable string from whichever fields are present */
     const city   = addr.city || addr.town || addr.village || addr.county || addr.state_district || '';
     const state  = addr.state || '';
 
@@ -252,7 +244,7 @@ export default function Home() {
                   <div className="card-row">
                     <div>
                       <div className="bus-name">{bus.name}</div>
-                      <div className="bus-hours">⏰ {bus.operating_hours}</div>
+                      <div className="bus-hours">{bus.operating_hours}</div>
                     </div>
                     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 6 }}>
                       <span className="bus-num-badge">{bus.bus_number}</span>

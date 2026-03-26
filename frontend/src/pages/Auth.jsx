@@ -36,8 +36,10 @@ export function Login() {
           <div className="logo-icon">🚌</div>
           <h2>NavBus</h2>
         </div>
-        <h3>Welcome Back</h3>
-        <p className="subtitle">Sign in to track your bus</p>
+        <div style={{ textAlign: 'center' }}>
+          <h3>Welcome Back</h3>
+          <p className="subtitle">Sign in to track your bus</p>
+        </div>
 
         <div className="input-group">
           <label>Username</label>
@@ -51,9 +53,6 @@ export function Login() {
         <button className="btn-primary" onClick={handleSubmit} disabled={loading}>
           {loading ? '...' : 'Sign In'}
         </button>
-        <div style={{ textAlign: 'center', marginTop: 12, fontSize: 13, color: 'var(--text-muted)' }}>
-          Demo: passenger / pass123 · driver / driver123
-        </div>
         <div className="or-divider"><span>or</span></div>
         <div style={{ textAlign: 'center' }}>
           <span style={{ fontSize: 13, color: 'var(--text-muted)' }}>New here? </span>
@@ -98,16 +97,11 @@ export function Register() {
           <div className="logo-icon">🚌</div>
           <h2>NavBus</h2>
         </div>
-        <h3>Create Account</h3>
-        <p className="subtitle">Join NavBus to track buses in Vellore</p>
-
-        <div style={{ marginBottom: 16 }}>
-          <div className="step-label">I am a</div>
-          <div className="role-toggle">
-            <button className={`role-btn ${role === 'passenger' ? 'active' : ''}`} onClick={() => setRole('passenger')}>🧑 Passenger</button>
-            <button className={`role-btn ${role === 'driver' ? 'active' : ''}`} onClick={() => setRole('driver')}>🚌 Driver</button>
-          </div>
+        <div style={{ textAlign: 'center' }}>
+          <h3>Create Account</h3>
+          <p className="subtitle">Join NavBus to track buses in Vellore</p>
         </div>
+
         <div className="input-group">
           <label>Username</label>
           <input type="text" placeholder="Choose a username" value={username} onChange={e => setUsername(e.target.value)} />
@@ -115,6 +109,13 @@ export function Register() {
         <div className="input-group">
           <label>Password</label>
           <input type="password" placeholder="At least 6 characters" value={password} onChange={e => setPassword(e.target.value)} onKeyDown={e => e.key === 'Enter' && handleSubmit()} />
+        </div>
+        <div style={{ marginBottom: 16 }}>
+          <div className="step-label">I am a</div>
+          <div className="role-toggle">
+            <button className={`role-btn ${role === 'passenger' ? 'active' : ''}`} onClick={() => setRole('passenger')}>🧑 Passenger</button>
+            <button className={`role-btn ${role === 'driver' ? 'active' : ''}`} onClick={() => setRole('driver')}>🚌 Driver</button>
+          </div>
         </div>
         {error && <p style={{ color: 'var(--danger)', fontSize: 13, marginBottom: 12 }}>⚠️ {error}</p>}
         <button className="btn-primary" onClick={handleSubmit} disabled={loading}>

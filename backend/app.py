@@ -1,18 +1,3 @@
-"""
-NavBus – Production Backend
-Flask + Flask-SocketIO (eventlet) + SQLite
-
-Real-time features:
-  • Driver emits GPS via WebSocket  → server broadcasts to room "bus_<id>"
-  • Passengers join room  → receive live updates instantly (no polling)
-  • Falls back to REST polling every 15 s if WebSocket unavailable
-
-Tracking logic (fixed):
-  • Current stop = nearest stop to real GPS coordinate
-  • ETA = sum of segment distances along route ÷ speed
-  • No live data → source='schedule', no fake ETAs
-"""
-
 import os, math, time, json, hashlib
 from datetime import datetime
 from flask import Flask, request, jsonify, send_from_directory

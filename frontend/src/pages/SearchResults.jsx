@@ -87,13 +87,6 @@ export default function SearchResults() {
                       <span style={{ color:'var(--primary)', fontWeight:600 }}>{bus.next_departure}</span>
                     </div>
                   )}
-
-                  {/* Hint that tapping reveals the highlighted stop */}
-                  <div style={{ marginTop:6, fontSize:11, color:'var(--text-muted)',
-                                display:'flex', alignItems:'center', gap:4 }}>
-                    <span style={{ color:'var(--warning)' }}>📍</span>
-                    <span>Tap to see <strong style={{ color:'var(--warning)' }}>{to}</strong> highlighted in ETA &amp; Stops</span>
-                  </div>
                 </div>
               );
             }))}
