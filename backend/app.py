@@ -2,15 +2,18 @@ import os, math, time, json, hashlib
 from datetime import datetime
 from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
+import sqlite3
 from flask_sqlalchemy import SQLAlchemy
 from flask_socketio import SocketIO, emit, join_room, leave_room
+from werkzeug.security import generate_password_hash,check_password_hash
+from flask_jwt_extended import (JWTManager, create_access_token,jwt_required, get_jwt_identity )
 
 # ── App Setup ─────────────────────────────────────────────────────────────────
 BASE_DIR     = os.path.abspath(os.path.dirname(__file__))
 FRONTEND_DIR = os.path.join(BASE_DIR, 'static_frontend')
 
-app = Flask(__name__, static_folder=None)
-app.config['SECRET_KEY']                  = os.getenv('SECRET_KEY', 'navbus-super-secret-2024')
+app = Flask(__name__)
+app.config['JWT_SECRET_KEY']                  = os.getenv('JWT_SECRET_KEY', 'navbus-super-secret-2024')
 app.config['SQLALCHEMY_DATABASE_URI']     = f"sqlite:///{os.path.join(BASE_DIR, 'navbus.db')}"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
@@ -23,6 +26,13 @@ socketio = SocketIO(app,
                     ping_interval=10,
                     logger=False,
                     engineio_logger=False)
+jwt = JWTManager(app)
+
+def get_db_connection():
+    db_path = os.getenv('DATABASE_URL', 'database.db')
+    conn = sqlite3.connect(db_path)
+    conn.row_factory = sqlite3.Row
+    return conn
 
 # ── Models ────────────────────────────────────────────────────────────────────
 
@@ -175,27 +185,54 @@ def push_bus_update(bus_id, payload):
 
 # ── AUTH ──────────────────────────────────────────────────────────────────────
 
-@app.route('/api/auth/register', methods=['POST'])
+@app.route('/api/register', methods=['POST'])
 def register():
-    d = request.json
-    if not d.get('username') or not d.get('password'):
-        return jsonify({'error': 'Username and password required'}), 400
-    if User.query.filter_by(username=d['username']).first():
-        return jsonify({'error': 'Username already exists'}), 409
-    u = User(username=d['username'], password=hash_pw(d['password']),
-             role=d.get('role', 'passenger'))
-    db.session.add(u)
-    db.session.commit()
-    return jsonify({'message': 'Registered', 'user': {'id': u.id, 'username': u.username, 'role': u.role}}), 201
+    data = request.json
+    username = data.get('username', '').strip()
+    password = data.get('password', '').strip()
+    role     = data.get('role')
 
-@app.route('/api/auth/login', methods=['POST'])
+    if not username or not password or not role:
+        return jsonify({'error': 'Missing fields'}), 400
+
+    conn = get_db_connection()
+    try:
+        conn.execute(
+           "INSERT INTO users (username, password, role) VALUES (?, ?, ?)",
+            (username,generate_password_hash(password), role)
+        )
+        conn.commit()
+    except sqlite3.IntegrityError:
+        conn.close()
+        return jsonify({'error': 'Username already exists. Please choose a different one.'}), 400
+    conn.close()
+    return jsonify({'message': 'User registered successfully'})
+
+@app.route('/api/login', methods=['POST'])
 def login():
-    d = request.json
-    u = User.query.filter_by(username=d.get('username'),
-                             password=hash_pw(d.get('password', ''))).first()
-    if not u:
-        return jsonify({'error': 'Invalid credentials'}), 401
-    return jsonify({'user': {'id': u.id, 'username': u.username, 'role': u.role}})
+    data     = request.json
+    username = data.get('username', '').strip()
+    password = data.get('password', '').strip()
+
+    conn = get_db_connection()
+    user = conn.execute(
+        "SELECT * FROM users WHERE username = ?",
+        (username,)
+    ).fetchone()
+    if user and not check_password_hash(user['password'], password):
+        user = None
+        conn.close()
+
+    if user:
+        token = create_access_token(identity={
+            'username': user['username'],
+            'role':     user['role']
+        })
+        return jsonify({'message':  'Login successful',
+                        'username': user['username'],
+                        'role':     user['role'],
+                        'token':    token})    
+    return jsonify({'error': 'Invalid credentials'}), 401
 
 # ── ROUTES ────────────────────────────────────────────────────────────────────
 
