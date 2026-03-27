@@ -1,0 +1,69 @@
+{
+  "appId": "com.navbus.app",
+  "appName": "NavBus",
+  "webDir": "dist",
+  "bundledWebRuntime": false,
+  "server": {
+    "androidScheme": "https",
+    "cleartext": true,
+    "allowNavigation": [
+      "*.onrender.com",
+      "*.railway.app",
+      "localhost",
+      "maps.googleapis.com",
+      "nominatim.openstreetmap.org",
+      "*.openstreetmap.org",
+      "*.googleapis.com"
+    ]
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 2500,
+      "backgroundColor": "#15a8cd",
+      "showSpinner": false,
+      "androidSplashResourceName": "splash",
+      "splashFullScreen": true,
+      "splashImmersive": true,
+      "layoutName": "launch_splash",
+      "useDialog": true
+    },
+    "StatusBar": {
+      "style": "LIGHT",
+      "backgroundColor": "#15a8cd",
+      "translucent": false
+    },
+    "Geolocation": {
+      "permissions": ["location"]
+    },
+    "Keyboard": {
+      "resize": "body",
+      "style": "DARK",
+      "resizeOnFullScreen": true
+    },
+    "App": {
+      "appId": "com.navbus.app",
+      "appName": "NavBus"
+    }
+  },
+  "android": {
+    "buildOptions": {
+      "releaseType": "APK",
+      "keystorePath": "",
+      "keystorePassword": "",
+      "keystoreAlias": "",
+      "keystoreAliasPassword": "",
+      "releaseType": "APK"
+    },
+    "permissions": [
+      "ACCESS_FINE_LOCATION",
+      "ACCESS_COARSE_LOCATION",
+      "INTERNET",
+      "ACCESS_NETWORK_STATE",
+      "FOREGROUND_SERVICE"
+    ],
+    "allowMixedContent": true,
+    "captureInput": true,
+    "webContentsDebuggingEnabled": true
+  },
+  "cordova": {}
+}

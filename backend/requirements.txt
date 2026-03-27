@@ -1,0 +1,31 @@
+# NavBus Backend Dependencies - Production Ready
+# Flask Core
+flask>=3.0.0
+
+# CORS Support
+flask-cors>=4.0.0
+
+# Database
+flask-sqlalchemy>=3.1.0
+
+# WebSocket (Socket.IO)
+flask-socketio>=5.3.0
+
+# Async Worker (gevent for WebSocket support)
+gevent>=23.9.0
+gevent-websocket>=0.10.1
+
+# Production WSGI Server
+gunicorn>=21.0.0
+
+# Security - Password Hashing (better than SHA256)
+bcrypt>=4.1.0
+
+# Rate Limiting (prevent API abuse)
+flask-limiter>=3.5.0
+
+# Environment Variables
+python-dotenv>=1.0.0
+
+# Additional Security
+tornado>=6.4.0
