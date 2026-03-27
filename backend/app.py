@@ -20,9 +20,9 @@ from functools import wraps
 def naive_utcnow():
     return datetime.now(timezone.utc).replace(tzinfo=None)
 
-# ── gevent monkey-patch MUST be first ────────────────────────────────────────
-from gevent import monkey
-monkey.patch_all()
+# ── eventlet monkey-patch MUST be first ────────────────────────────────────────
+import eventlet
+eventlet.monkey_patch()
 
 from flask import Flask, request, jsonify, send_from_directory, g
 from flask_cors import CORS
@@ -66,11 +66,11 @@ limiter = Limiter(
     enabled=app.config['RATELIMIT_ENABLED']
 )
 
-# Socket.IO with gevent
+# Socket.IO with eventlet
 socketio = SocketIO(
     app,
     cors_allowed_origins='*',
-    async_mode='gevent',
+    async_mode='eventlet',
     ping_timeout=25,
     ping_interval=10,
     logger=False,
@@ -619,7 +619,7 @@ def health():
     return jsonify({
         'status': 'ok',
         'time': naive_utcnow().isoformat(),
-        'async': 'gevent',
+        'async': 'eventlet',
         'database': db_status,
         'version': '1.0.0'
     })
