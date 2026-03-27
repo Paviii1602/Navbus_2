@@ -14,6 +14,10 @@ venv/
 
 # Database (don't commit local DB — Render creates its own)
 backend/navbus.db
+backend/.env
+frontend/.env
+frontend/.env.apk
+
 
 # Node
 frontend/node_modules/
