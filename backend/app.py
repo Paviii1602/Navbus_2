@@ -1,7 +1,3 @@
-# ── eventlet monkey-patch MUST be first ────────────────────────────────────────
-import eventlet
-eventlet.monkey_patch()
-
 import os, math, time, json, signal, sys
 from datetime import datetime, timezone
 from functools import wraps
@@ -23,7 +19,7 @@ load_dotenv()
 
 # ── App Setup ─────────────────────────────────────────────────────────────────
 BASE_DIR     = os.path.abspath(os.path.dirname(__file__))
-FRONTEND_DIR = os.path.join(BASE_DIR, 'static_frontend')
+FRONTEND_DIR = os.path.join(BASE_DIR, 'dist')
 
 app = Flask(__name__, static_folder=None)
 
@@ -55,7 +51,7 @@ limiter = Limiter(
 socketio = SocketIO(
     app,
     cors_allowed_origins='*',
-    async_mode='eventlet',
+    async_mode='threading',
     ping_timeout=25,
     ping_interval=10,
     logger=False,
@@ -604,7 +600,7 @@ def health():
     return jsonify({
         'status': 'ok',
         'time': naive_utcnow().isoformat(),
-        'async': 'eventlet',
+        'async': 'threading',
         'database': db_status,
         'version': '1.0.0'
     })
@@ -653,7 +649,6 @@ def init_db():
 
 def shutdown(signum, frame):
     app.logger.info("Shutting down gracefully...")
-    socketio.stop()
     sys.exit(0)
 
 signal.signal(signal.SIGTERM, shutdown)

@@ -179,7 +179,7 @@ export function Register() {
           <label>Username</label>
           <input
             type="text"
-            placeholder="Choose a username (min 3 chars)"
+            placeholder="Choose a username"
             value={username}
             autoCapitalize="none"
             autoCorrect="off"
