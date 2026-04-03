@@ -115,7 +115,7 @@ export default function BusTracking() {
   const startCrowdsource = () => {
     if (!navigator.geolocation) { showToast('Geolocation not available'); return; }
     setIsCrowdsourcing(true);
-    showToast('Sharing your location 🙏');
+    showToast('Sharing your location ');
     const send = () => navigator.geolocation.getCurrentPosition(pos => {
       setUserLat(pos.coords.latitude); setUserLng(pos.coords.longitude);
       api.updateBusLocation(id, pos.coords.latitude, pos.coords.longitude,
@@ -211,12 +211,11 @@ export default function BusTracking() {
       <div className="crowd-bar">
         {isCrowdsourcing ? (
           <div className="crowd-active">
-            <span className="live-dot" style={{ width:10, height:10 }}/> Sharing every 30s
+            <span className="live-dot" style={{ width:10, height:10 }}/> Started Sharing
             <button onClick={stopCrowdsource} style={{ marginLeft:'auto', background:'none', border:'none', color:'var(--danger)', fontWeight:700, cursor:'pointer', fontSize:12 }}>Stop</button>
           </div>
         ) : (
           <>
-            <p>Help others by sharing your location</p>
             <button className="btn-secondary" style={{ fontSize:13, padding:'10px' }} onClick={startCrowdsource}>🚌 I'm on this bus</button>
           </>
         )}

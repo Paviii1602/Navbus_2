@@ -77,7 +77,7 @@ export default function DriverDashboard() {
       clearInterval(restTimer.current);
       setTripActive(false); setTripId(null); setCurrentBus(null);
       setDriverLat(null); setDriverLng(null); setSpeed(0);
-      showToast('Trip ended. Thanks for driving! 🙏');
+      showToast('Trip ended. Thanks for driving! ');
     } catch { showToast('Failed to end trip'); }
   };
 

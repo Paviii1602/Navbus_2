@@ -63,10 +63,10 @@ export function Login() {
           </div>
           <h2>NavBus</h2>
         </div>
-
-        <h3>Welcome Back</h3>
-        <p className="subtitle">Sign in to track your bus</p>
-
+        <div style={{ textAlign:'center' }}> 
+          <h3>Welcome Back</h3>
+          <p className="subtitle">Sign in to track your bus</p>
+        </div>
         <div className="input-group">
           <label>Username</label>
           <input
@@ -119,12 +119,6 @@ export function Login() {
           ) : 'Sign In'}
         </button>
 
-        <div style={{ textAlign:'center', marginTop:12, fontSize:12, color:'var(--text-muted)',
-                      background:'rgba(21,168,205,0.07)', borderRadius:8, padding:'8px 12px' }}>
-          Demo — Passenger: <strong>passenger / pass123</strong><br/>
-          Demo — Driver: <strong>driver / driver123</strong>
-        </div>
-
         <div className="or-divider"><span>or</span></div>
         <div style={{ textAlign:'center' }}>
           <span style={{ fontSize:13, color:'var(--text-muted)' }}>New here? </span>
@@ -176,16 +170,9 @@ export function Register() {
           <div className="logo-icon">🚌</div>
           <h2>NavBus</h2>
         </div>
-
-        <h3>Create Account</h3>
-        <p className="subtitle">Join NavBus to track buses in Vellore</p>
-
-        <div style={{ marginBottom:16 }}>
-          <div className="step-label">I am a</div>
-          <div className="role-toggle">
-            <button className={`role-btn ${role==='passenger'?'active':''}`} onClick={() => setRole('passenger')}>🧑 Passenger</button>
-            <button className={`role-btn ${role==='driver'?'active':''}`}    onClick={() => setRole('driver')}>🚌 Driver</button>
-          </div>
+        <div style={{ textAlign:'center' }}>
+          <h3>Create Account</h3>
+          <p className="subtitle">Join NavBus to track buses in Vellore</p>
         </div>
 
         <div className="input-group">
@@ -213,6 +200,14 @@ export function Register() {
             onKeyDown={e => e.key === 'Enter' && handleSubmit()}
             style={inp}
           />
+        </div>
+
+        <div style={{ marginBottom:16 }}>
+          <div className="step-label">I am a</div>
+          <div className="role-toggle">
+            <button className={`role-btn ${role==='passenger'?'active':''}`} onClick={() => setRole('passenger')}>🧑 Passenger</button>
+            <button className={`role-btn ${role==='driver'?'active':''}`}    onClick={() => setRole('driver')}>🚌 Driver</button>
+          </div>
         </div>
 
         {error && (

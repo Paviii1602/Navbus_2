@@ -1,18 +1,3 @@
-"""
-NavBus — Production Backend
-Flask + Flask-SocketIO (gevent) + SQLite
-
-Production Improvements:
-  1. bcrypt password hashing (secure, not SHA256)
-  2. Rate limiting to prevent API abuse
-  3. Request logging for debugging
-  4. Environment variables via python-dotenv
-  5. Enhanced health checks with DB status
-  6. Graceful shutdown handling
-  7. API versioning ready (/api/v1/)
-  8. Better error handling and validation
-"""
-
 import os, math, time, json, signal, sys
 from datetime import datetime, timezone
 from functools import wraps
