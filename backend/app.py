@@ -1,13 +1,13 @@
+# ── eventlet monkey-patch MUST be first ────────────────────────────────────────
+import eventlet
+eventlet.monkey_patch()
+
 import os, math, time, json, signal, sys
 from datetime import datetime, timezone
 from functools import wraps
 
 def naive_utcnow():
     return datetime.now(timezone.utc).replace(tzinfo=None)
-
-# ── eventlet monkey-patch MUST be first ────────────────────────────────────────
-import eventlet
-eventlet.monkey_patch()
 
 from flask import Flask, request, jsonify, send_from_directory, g
 from flask_cors import CORS
